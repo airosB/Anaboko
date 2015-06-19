@@ -13,21 +13,9 @@ Chrome以外のブラウザでは一部表示が崩れるようです。
 - 入渠時間の長い順にソート
 - 実装済みで未所持の艦を一覧表示
 
-## インストール方法
-- git, node, npmをインストールしてパスを通す
-- クローン先ディレクトリ上で以下のコマンドを順に実行
-----
-    npm update -g
-    npm install -g coffee
-    npm install -g gulp@3.8.11
-    npm install -g bower@1.3.12
-    npm install
-    gulp init
-    gulp
-
 ## 使い方
 - 艦これを普通に起動して、サーバから送られてくるJSONをお好みの方法で保存してください。
-- JSON`start2`, `slotitem`, `port`の内容を、それぞれ`def_base.json`, `api_slotitem.json`, `api_port.json`内の`svdata=`に書き出せばOKです。
+- 具体的には、`start2`, `slotitem`, `port`のJSONの内容を、それぞれ`json/def_base.json`, `json/api_slotitem.json`, `json/api_port.json`内の`svdata=`にそのまま書き出せばOKです。
 
 ※api_port.jsonの例
 
