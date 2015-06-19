@@ -1,0 +1,35 @@
+{
+  "name": "Anaboko",
+  "version": "5.1.3",
+  "description": "Data visualizer and stats utils for Kancolle.",
+  "main": "anaboko.html",
+  "dependencies": {},
+  "devDependencies": {
+    "coffee-script": "1.8.0",
+    "gulp": "3.8.11",
+    "gulp-util": "3.0.2",
+    "gulp-plumber": "0.6.6",
+    "gulp-sass": "1.3.3",
+    "gulp-coffee": "2.2.0",
+    "gulp-rename": "1.2.0",
+    "gulp-watch": "4.1.0",
+    "gulp-sourcemaps": "1.3.0",
+    "gulp-notify": "2.2.0",
+    "node-notifier": "4.1.2",
+    "gulp-zip": "2.0.3",
+    "gulp-cached": "1.0.4",
+    "minimist": "1.1.0",
+    "main-bower-files": "2.6.2",
+    "gulp-filter": "2.0.2",
+    "run-sequence": "1.0.2",
+    "gulp-exec": "2.1.1",
+    "gulp-postcss": "5.1.8",
+    "autoprefixer-core": "5.2.0",
+    "css-mqpacker": "3.1.0"
+  },
+  "scripts": {
+    "test": "anaboko.html"
+  },
+  "author": "airos",
+  "license": ""
+}

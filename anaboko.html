@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="./css/main.css" />
+		<title>あなぼこ -あなたの母港-</title>
+		<title>Deuterium CIC</title>
+	</head>
+
+	<body>
+
+		<article id="dcic">
+			<h1>あなぼこ -あなたの母港-</h1>
+			<section class="input json-input">
+				<textarea id="port-input" placeholder="port JSON"></textarea>
+				<button id="analyze" class="analyze-button">analyze</button>
+			</section>
+
+			<section class="input text-input">
+				<input type="text" id="search-equipment-input" placeholder="装備検索" />
+				<button id="search-equipment-button">find</button>
+			</section>
+
+			<!-- <section class="input text-input">
+				<input type="text" id="base-ship-input" placeholder="艦の検索 → Console出力" />
+				<button id="base-ship-button">base</button>
+			</section> -->
+
+			<section class="output equip-finder">
+				<h2>装備検索</h2>
+				<div class="search-result" id="search-result"></div>
+			</section>
+
+			<section class="output fleets-view">
+				<h2>艦隊</h2>
+				<div class="fleet-summary" id="fleet-summary"></div>
+			</section>
+
+			<section class="output level-histgram">
+				<h2>レベル分布</h2>
+				<p class="overall-stat" id="overall-stat"></p>
+				<div class="level-chart" id="level-chart"></div>
+			</section>
+
+			<section class="output ships-view">
+				<h2>母港
+					<span class="switch enabled level-filter" data-threshold="1">≥ Lv.1</span>
+					<span class="switch enabled level-filter" data-threshold="20">≥ Lv.20</span>
+					<span class="switch enabled level-filter" data-threshold="50">≥ Lv.50</span>
+					<span class="switch enabled level-filter" data-threshold="80">≥ Lv.80</span>
+					<span class="switch enabled level-filter" data-threshold="100">≥ Lv.100</span>
+					<span class="level-filter-count" id="level-filter-count">0</span>
+				</h2>
+				<div class="mother-table" id="mother-table"></div>
+			</section>
+
+			<section class="output nonowned-view">
+				<h2>未所持艦</h2>
+				<div class="nonowned-ships" id="nonowned-ships"></div>
+			</section>
+ 		</article>
+
+ 		<article id="dcic-templates">
+			<script type="text/template" id="t-shiptable-head-th">
+				<th class="ship-table-sorter<%
+				if(sortName == sortKey && isInverted){ %> current-sort inverted<%
+				}else if(sortName == sortKey){ %> current-sort<%
+				} %>" data-sort="<%- sortName %>"><%- headLabel %></th>
+				}
+			</script>
+
+			<script type="text/template" id="t-decksummary-head">
+				<dt class="fleet-info fleet-<%= fleetNumber %>" data-fleet="<%= fleetNumber %>">
+					<%= fleetNumber %>: <%= fleetName %>
+					<span class="tweak-indicator default">∈</span>
+					<span class="tweak-indicator tweaken">∋</span>
+				</dt>
+			</script>
+
+			<script type="text/template" id="t-decksummary-content">
+				<dd class="fleet-info fleet-<%= fleetNumber %>" data-fleet="<%= fleetNumber %>">
+					制空値合計: <%= totalAirMastery %> /
+					<!-- 索敵値総計: <%= totalScout %> -->
+					索敵値合計: <%= totalWeirdScout %>
+				</dd>
+			</script>
+
+			<script type="text/template" id="t-decksummary-text-content">
+				制空値合計: <%= totalAirMastery %> / 索敵値合計: <%= totalWeirdScout %>
+			</script>
+
+			<script type="text/template" id="t-decksummary-list">
+				<ul class="shipsummary fleet-<%= fleetNumber %>" id="shipsummary-<%= fleetNumber %>"></ul>
+			</script>
+
+			<script type="text/template" id="t-deckdetail-list">
+				<ul class="equipdetail fleet-<%= fleetNumber %>" id="equipdetail-<%= fleetNumber %>"></ul>
+			</script>
+
+			<script type="text/template" id="t-decksummary-eachship">
+				<li <% if(isFlagship){ %> class="flagship" <% } %> >
+					<span class="ship-type"><%= type %></span>
+					<span class="ship-name"><%= name %></span>
+					<span class="ship-level">Lv.<%= level %></span>
+					<span class="ship-cond">士気: <%= condition %></span>
+				</li>
+			</script>
+
+			<script type="text/template" id="t-deckdetail-eachship">
+				<li <% if(isFlagship){ %> class="flagship" <% } %> >
+					<span class="shipdetail-name"><%= name %></span>
+					<span class="shipdetail-level">Lv.<%= level %></span>
+					<span class="shipdetail-equipments">（<%= equipments %>）</span>
+				</li>
+			</script>
+
+			<script type="text/template" id="t-decksummary-text-eachship">
+				<% if(isFlagship){ %>◎<% }else{ %>○<% } %><%= type %> <%= name %> Lv.<%= level %> 士気: <%= condition %>
+			</script>
+
+			<script type="text/template" id="t-deckdetail-text-eachship">
+				<% if(isFlagship){ %>◎<% }else{ %>○<% } %><%= name %> Lv.<%= level %>（<%= equipments %>）
+			</script>
+
+			<script type="text/template" id="t-overall-content">
+				<span class="overall-label">所有艦数</span>
+				<span class="overall-value"><%= shipCount %></span>
+				<span class="overall-label">重複なし艦数</span>
+				<span class="overall-value"><%= distinctShipCount %></span>
+				<span class="overall-label">全艦総経験値</span>
+				<span class="overall-value"><%= totalExps %></span>
+				<span class="overall-label">遠征失敗数</span>
+				<span class="overall-value"><%= failedMissions %></span>
+			</script>
+ 		</article>
+	</body>
+
+	<script src="https://www.google.com/jsapi"></script>
+	<script src="./jslib/jquery/jquery.min.js"></script>
+	<script src="./jslib/underscore/underscore-min.js"></script>
+	<script src="./jslib/underscore.string/underscore.string.min.js"></script>
+	<script src="./jslib/backbone/backbone.js"></script>
+	<script>
+		CIC = {};
+	</script>
+
+	<script src="./json/def_base.json"></script>
+	<script src="./json/def_exp.json"></script>
+	<script src="./json/api_port.json"></script>
+	<script src="./json/api_slotitem.json"></script>
+	<script src="./js/application.js"></script>
+
+</html>
+
+
+

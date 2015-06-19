@@ -1,0 +1,441 @@
+@charset "UTF-8";
+
+/* compass
+---------------------------------------------------------------------------- */
+@import "compass/utilities/general/clearfix";
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/text-shadow";
+@import "compass/css3/images";
+@import "compass/css3/transform";
+@import "compass/css3/user-interface";
+
+
+/* 基礎
+----------------------------------------------------*/
+$primary-color: #FFAD00; // 黄色
+$secondary-color: #133CAC; // 青
+$complmenetary-color-a: #FF7800; // パンプキン
+$complmenetary-color-b: #028E9B; // 海
+$disabled-color: #bdc3c7;
+
+body{
+	background: #fff;
+	padding: 0;
+	margin: 0;
+}
+
+article{
+	margin-left: 5px;
+}
+
+h1,h2{
+	font-family: serif;
+	font-weight: bold;
+}
+h1{
+	font-size: 36px;
+}
+h2{
+	font-size: 27px;
+	margin-bottom: 20px;
+}
+.switch{
+	display: inline-block;
+	margin: 0 0 5px 15px;
+	padding: 2px 6px;
+
+	@include border-radius(4px);
+	background: $disabled-color;
+	color: #fff;
+	cursor: pointer;
+	font-family: sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	transition: 0.3s ease-out;
+
+	&.enabled{
+		background: $complmenetary-color-b;
+		background: mix($complmenetary-color-b, $secondary-color);
+	}
+}
+.level-filter-count{
+	display: inline-block;
+	margin: 0 0 5px 15px;
+	padding: 2px 6px;
+	@include border-radius(4px);
+	background: #fff;
+	color: #000;
+	font-family: sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	transition: 0.3s ease-out;
+}
+
+section.input{
+}
+section.output{
+	margin: 50px 0 20px 15px;
+	display: none;
+	&.show{
+		display: block;
+	}
+}
+
+
+
+input[type="text"], textarea{
+	font-size: 16px;
+	padding: 8px 12px;
+	line-height: 1.467;
+	padding: 15px 20px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	border: 2px solid $disabled-color;
+	color: #34495e;
+	@include border-radius(6px);
+	width: 400px;
+	outline: none;
+	transition: 0.25s linear;
+}
+input[type="text"]:focus, textarea:focus{
+	border-color: #1abc9c;
+}
+textarea{
+	font-family: 'Consolas';
+}
+
+textarea.copy{
+	font-size: 13px;
+	width: 600px;
+}
+div.copy-wrapper{
+	background: #fff;
+	position: fixed;
+	z-index: 1500;
+}
+
+
+button{
+	@include border-radius(4px);
+	cursor: pointer;
+	color: #fff;
+	border: none;
+	background: $primary-color;
+	outline: none;
+	padding: 10px 20px;
+	transition: 0.5s;
+	&:hover{
+		background: lighten($primary-color, 5%);
+	}
+	&:active{
+		background: darken($primary-color, 5%);
+	}
+	&.analyze-button{
+		vertical-align: top;
+	}
+}
+
+/* 汎用
+----------------------------------------------------*/
+// ロード時のオーバレイ。body直下に置かれる
+.overlay{
+	z-index: 101;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	background-color: #fff;
+	opacity: 0.6;
+}
+.loader{
+	position: fixed;
+	font-size: 500%;
+	z-index: 201;
+	padding: 40px;
+}
+
+// 全画面フラッシュ。body直下に置かれる
+.fullscreen-notification{
+	background-color: $secondary-color;
+	background-color: $complmenetary-color-a;
+	z-index: 105;
+	height: 10000%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	opacity: 0.9;
+	transition: 0.6s;
+
+	.notification-statement{
+		position: fixed;
+		font-size: 2500%;
+		@include transform(scale(0.20));
+		color: #fff;
+		z-index: 201;
+		margin: 0;
+		transition: 0.6s;
+	}
+
+	&.readable{
+		opacity: 0.7;
+		.notification-statement{
+			@include transform(scale(0.24));
+		}
+	}
+
+	&.flush{
+		opacity: 0;
+		.notification-statement{
+			@include transform(scale(1));
+		}
+	}
+}
+
+
+
+/* メインテーブル
+----------------------------------------------------*/
+// 出力先
+.mother-table{
+	overflow: hidden;
+	height: 0;
+	transition: 0.5s;
+}
+
+
+table{
+	box-sizing: border-box;
+	border-collapse: collapse;
+	thead{
+		font-size: 14px;
+		text-align: left;
+		background: $secondary-color;
+		color: #fff;
+		th{
+			padding: 5px 15px 5px 10px;
+			min-width: 40px;
+
+			&.ship-table-sorter{
+				cursor: pointer;
+				&.current-sort{
+					background: darken($secondary-color, 11%);
+					&.inverted{}
+				}
+			}
+		}
+	}
+	tbody{
+		font-size: 12px;
+
+		opacity: 0;
+		transition: 0.5s ease-in-out;
+		&.show{
+			opacity: 1;
+		}
+
+		td{
+			padding: 5px 15px 5px 10px;
+		}
+
+		tr{
+			background: #fff;
+			transition: 0.2s;
+			&:nth-child(even){
+				background: #f4f4f4;
+			}
+			&:hover{
+				background: mix(lighten($secondary-color, 10%), lighten($complmenetary-color-b, 20%));
+				background: lighten($primary-color, 10%);
+				transition: none;
+			}
+		}
+	}
+
+	&.static-body{
+		thead{
+			opacity: 1;
+		}
+		&.hold{
+			thead{
+				opacity: 0;
+			}
+		}
+	}
+
+	&.sticky-header{
+		position: absolute;
+		top: 0;
+		opacity: 0;
+		transition: top 0.2s ease-out;
+		&.hold{
+			box-shadow: 0 0.25em 0.1em -0.1em rgba(0,0,0,.125);
+			z-index: 10;
+			opacity: 1;
+		}
+	}
+}
+
+
+/* 艦や装備のリスト共通
+----------------------------------------------------*/
+.search-result{
+	overflow: hidden;
+	height: 0;
+	transition: 0.5s;
+}
+
+dl{
+	font-size: 14px;
+	line-height: 1.5;
+	width: 500px;
+	margin: 0;
+	transition: 0.5s;
+	transition-delay: 0.2s;
+	opacity: 0;
+	&.show{
+		opacity: 1;
+	}
+
+	dt{
+		position: relative;
+		padding: 2px 8px;
+		font-weight: bold;
+		background: $secondary-color;
+		color: #fff;
+		box-shadow: 0 0.25em 0.1em -0.1em rgba(0,0,0,.125);
+		&+dd{
+			margin-top: 5px;
+		}
+	}
+	dd{
+		position: relative;
+		margin-left: 20px;
+		ul{
+			list-style-type: circle;
+			margin: 0 0 15px 0;
+			padding-left: 30px;
+
+			li{
+				span{
+					display: inline-block;
+					&.ship-count{ width: 50px; }
+					&.ship-type{ width: 115px; }
+					&.ship-level{ width: 85px; }
+					&.ship-name{ width: 150px; }
+					&.shipdetail-equipments{ width: 300px; white-space: nowrap; overflow: visible; }
+				}
+			}
+		}
+	}
+}
+
+
+/* 艦隊表示
+----------------------------------------------------*/
+dl{
+	dt.fleet-info{
+		cursor: pointer;
+
+		.tweak-indicator{
+			position: absolute;
+			transition: 0.6s;
+			&.default{
+				right: 25px;
+			}
+			&.tweaken{
+				right: 0.8em;
+			}
+		}
+		&.tweaken{
+			.tweak-indicator{
+				&.default{
+					right: 0.8em;
+				}
+				&.tweaken{
+					right: 25px;
+				}
+			}
+		}
+	}
+
+	// 艦隊詳細のキューブっぽく回転するやつ
+	dd.fleet-info{
+		@include perspective(600px);
+		@include clearfix;
+		width: 1000px;
+		height: 180px;
+		// 仮の値。JSでリスト高さにフィットするようアジャストをかける
+
+		ul{
+			width: 600px;
+			overflow: visible;
+			position: absolute;
+			transition: 0.6s;
+
+
+			&.shipsummary{
+				opacity: 1;
+				pointer-events: auto;
+				@include user-select(text);
+				@include transform(rotateX(0deg));
+				@include transform-origin(50%, 15%, -100px);
+			}
+			&.equipdetail{
+				opacity: 0;
+				pointer-events: none;
+				@include user-select(none);
+				@include transform(rotateX(90deg));
+				@include transform-origin(50%, 75%, -100px);
+			}
+		}
+
+		&.tweaken{
+			.shipsummary{
+				opacity: 0;
+				pointer-events: none;
+				@include user-select(none);
+				@include transform(rotateX(-90deg));
+			}
+			.equipdetail{
+				opacity: 1;
+				pointer-events: auto;
+				@include user-select(text);
+				@include transform(rotateX(0deg));
+			}
+		}
+	}
+}
+
+
+
+
+
+/* レベルチャート
+----------------------------------------------------*/
+section.level-histgram{
+	display: block;
+	h2{ display: none; }
+	&.show{
+		h2{ display: block; }
+	}
+}
+
+
+
+/* 全体統計
+----------------------------------------------------*/
+.overall-stat{
+	font-size: 12px;
+	margin-left: 20px;
+	.overall-label{}
+	.overall-value{
+		color: #fff;
+		background: mix($complmenetary-color-b, $secondary-color);
+		padding: 2px 6px;
+		@include border-radius(4px);
+		margin: 0 25px 0 7px;
+	}
+}
+
+
+
