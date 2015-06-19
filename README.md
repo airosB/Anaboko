@@ -1,5 +1,5 @@
 # あなぼこ -あなたの母港-
-艦これのデータを綺麗にまとめて表示します。
+艦これの艦隊情報を綺麗にまとめて表示します。装備の検索とかできます。
 
 ![サンプル](https://raw.githubusercontent.com/airosB/Anaboko/master/img/hero.png)
 
