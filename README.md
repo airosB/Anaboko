@@ -1,6 +1,8 @@
 # あなぼこ -あなたの母港-
 艦これのデータを綺麗にまとめて表示します。
 
+![サンプル](https://raw.githubusercontent.com/airosB/Anaboko/master/img/hero.png)
+
 Chrome以外のブラウザでは一部表示が崩れるようです。
 
 
