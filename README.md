@@ -16,6 +16,7 @@ Chrome以外のブラウザでは一部表示が崩れるようです。
 ## インストール方法
 - git, node, npmをインストールしてパスを通す
 - クローン先ディレクトリ上で以下のコマンドを順に実行
+
 ----
     npm update -g
     npm install -g coffee
