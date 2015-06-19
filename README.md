@@ -3,8 +3,11 @@
 
 ![サンプル](https://raw.githubusercontent.com/airosB/Anaboko/master/img/hero.png)
 
-Chrome以外のブラウザでは一部表示が崩れるようです。
 
+## 動作デモ
+[動作デモ](http://volkarten.appspot.com/demo/anaboko.html)
+
+Chrome以外のブラウザでは一部表示が崩れるようです。
 
 ## 機能
 - 艦隊の編成と装備を一覧表示
