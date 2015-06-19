@@ -1,7 +1,6 @@
-# あなぼこ
-あなぼこ -あなたの母港-
-
+# あなぼこ -あなたの母港-
 艦これのデータを綺麗にまとめて表示します。
+
 Chrome以外のブラウザでは一部表示が崩れるようです。
 
 
@@ -17,6 +16,7 @@ Chrome以外のブラウザでは一部表示が崩れるようです。
 ## インストール方法
 - git, node, npmをインストールしてパスを通す
 - クローン先ディレクトリ上で以下のコマンドを順に実行
+----
     npm update -g
     npm install -g coffee
     npm install -g gulp@3.8.11
@@ -24,6 +24,18 @@ Chrome以外のブラウザでは一部表示が崩れるようです。
     npm install
     gulp init
     gulp
+
+## 使い方
+- 艦これを普通に起動して、サーバから送られてくるJSONをお好みの方法で保存してください。
+- JSON`start2`, `slotitem`, `port`の内容を、それぞれ`def_base.json`, `api_slotitem.json`, `api_port.json`内の`svdata=`に書き出せばOKです。
+
+※api_port.jsonの例
+
+    ;CIC._transactions =
+    svdata=（ここにportの内容を貼り付ける）
+    .api_data;
+
+すべて完了したら`anaboko.html`をブラウザで開き、analyzeボタンを押してください。
 
 ## ライセンス
 MIT License
